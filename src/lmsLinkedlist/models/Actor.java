@@ -1,4 +1,4 @@
-package lmsLinkedlist;
+package lmsLinkedlist.models;
 
 public class Actor {
     private String actorFullName;
@@ -23,5 +23,13 @@ public class Actor {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "\nActor{" +
+                "actorFullName='" + actorFullName + '\'' +
+                ", role='" + role + '\'' +
+                '}';
     }
 }

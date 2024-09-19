@@ -1,6 +1,9 @@
-package lmsLinkedlist;
+package lmsLinkedlist.models;
+
+import lmsLinkedlist.enums.Genre;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movie {
@@ -8,7 +11,17 @@ public class Movie {
     private LocalDate year;
     private Genre genre;
     private Producer producer;
-    private List<Actor> actors;
+    private List<Actor> actors= new ArrayList<>();
+
+    public Movie(String name, LocalDate year, Genre genre, Producer producer, List<Actor> actors) {
+
+        this.name = name;
+        this.year = year;
+        this.genre = genre;
+        this.producer = producer;
+        this.actors = actors;
+
+    }
 
     public String getName() {
         return name;
@@ -50,13 +63,14 @@ public class Movie {
         this.actors = actors;
     }
 
-    public Movie(String name, LocalDate year, Genre genre, Producer producer, List<Actor> actors) {
-
-        this.name = name;
-        this.year = year;
-        this.genre = genre;
-        this.producer = producer;
-        this.actors = actors;
-
+    @Override
+    public String toString() {
+        return "\nMovie{" +
+                "name='" + name + '\'' +
+                ", year=" + year +
+                ", genre=" + genre +
+                ", producer=" + producer +
+                ", actors=" + actors +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package lmsLinkedlist;
+package lmsLinkedlist.models;
 
 public class Producer {
     private String firstName;
@@ -23,5 +23,13 @@ public class Producer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "\nProducer{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,11 @@
 package lmsLinkedlist;
 
+import lmsLinkedlist.dao.impl.MuvieDaoImpl;
+import lmsLinkedlist.database.Database;
+import lmsLinkedlist.enums.Genre;
+import lmsLinkedlist.models.Actor;
+import lmsLinkedlist.models.Movie;
+import lmsLinkedlist.models.Producer;
 import lmsLinkedlist.service.MovieService;
 import lmsLinkedlist.service.MovieSortableService;
 import lmsLinkedlist.service.impl.MovieServiceImpl;
@@ -15,20 +21,14 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        List<Movie> movies = new ArrayList<>();
-        MovieService findableService = new MovieServiceImpl(movies);
-        MovieSortableService sortableService = new MovieSortableServiceImpl(movies);
-
+        MovieService movieService = new MovieServiceImpl();
+        MovieSortableService movieSortableService = new MovieSortableServiceImpl();
         Producer producer1 = new Producer("Aly", "Barsbek");
+        Producer producer2 = new Producer("Kim", "Aleksandr");
         List<Actor> actors1 = List.of(new Actor("Brad Pitt", "Lead Role"), new Actor("Angelina Jolie", "Support Role"),
-        new Actor("Jeckie Chan","Lead Role"));
-
-        Movie movie1 = new Movie("Fight Club", LocalDate.of(1999, 10, 15), Genre.ACTION, producer1, actors1);
-        Movie movie2 = new Movie("Skaska", LocalDate.of(2023, 10, 15), Genre.ROMANE, producer1, actors1);
-        movies.add(movie1);
-        movies.add(movie2);
-
+                new Actor("Jeckie Chan","Lead Role"));
+        movieService.save(new Movie("Dospehi", LocalDate.of(1999, 10, 15), Genre.ACTION, producer1, actors1));
+        movieService.save(new Movie("Skaska", LocalDate.of(2023, 10, 15), Genre.ROMANE, producer2, actors1));
         while (true) {
             System.out.println("\nChoose an action:");
             System.out.println("1. Get all movies");
@@ -48,72 +48,67 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    List<Movie> allMovies = findableService.getAllMovies();
-                    allMovies.forEach(m -> System.out.println(m.getName()));
+                    System.out.println(movieService.getAllMovies());
+
                     break;
 
                 case 2:
                     System.out.print("Enter movie name: ");
                     String name = scanner.nextLine();
-                    List<Movie> foundMovies = findableService.findMovieByFullNameOrPartName(name);
-                    foundMovies.forEach(m -> System.out.println(m.getName()));
+                    System.out.println(movieService.findMovieByFullNameOrPartName(name));
+
                     break;
 
                 case 3:
                     System.out.print("Enter actor name: ");
                     String actorName = scanner.nextLine();
-                    List<Movie> moviesByActor = findableService.findMovieByActorName(actorName);
-                    moviesByActor.forEach(m -> System.out.println(m.getName()));
+                    System.out.println(movieService.findMovieByActorName(actorName));
+
                     break;
 
                 case 4:
                     System.out.print("Enter year (YYYY-MM-DD): ");
                     LocalDate year = LocalDate.parse(scanner.nextLine());
-                    List<Movie> moviesByYear = findableService.findMovieByYear(year);
-                    moviesByYear.forEach(m -> System.out.println(m.getName()));
+                    System.out.println(movieService.findMovieByYear(year));
                     break;
                 case 5:
-                    System.out.print("Enter producer full name: ");
+                    System.out.print("Enter producer FullName: ");
                     String producerFullName = scanner.nextLine();
-                    List<Movie> moviesByProducer = findableService.findMovieByProducer(producerFullName);
-                    moviesByProducer.forEach(m -> System.out.println(m.getName()));
+                    System.out.println(movieService.findMovieByProducer(producerFullName));
+
                     break;
 
                 case 6:
                     System.out.print("Enter genre (ACTION, COMEDY, etc.): ");
                     Genre genre = Genre.valueOf(scanner.nextLine().toUpperCase());
-                    List<Movie> moviesByGenre = findableService.findMovieByGenre(genre);
-                    moviesByGenre.forEach(m -> System.out.println(m.getName()));
+                    System.out.println(movieService.findMovieByGenre(genre));
                     break;
 
                 case 7:
                     System.out.print("Enter actor full name: ");
-                    String actorFull = scanner.nextLine();
+                    String actorFullName = scanner.nextLine();
                     System.out.print("Enter movie name: ");
                     String movieName = scanner.nextLine();
-                    String role = findableService.findRoleByRoleAndMovieName(actorFull, movieName);
-                    System.out.println("Role: " + role);
+                    System.out.println(movieService.findRoleByRoleAndMovieName(actorFullName, movieName));
+
                     break;
 
                 case 8:
                     System.out.print("Sort by name (asc/desc): ");
                     String sortOrderName = scanner.nextLine();
-                    sortableService.sortMovieByName(sortOrderName);
-                    movies.forEach(m -> System.out.println(m.getName()));
+                   movieSortableService.sortMovieByName(sortOrderName);
                     break;
 
                 case 9:
                     System.out.print("Sort by year (asc/desc): ");
                     String sortOrderYear = scanner.nextLine();
-                    sortableService.sortByYear(sortOrderYear);
-                    movies.forEach(m -> System.out.println(m.getName() + " - " + m.getYear()));
+                   movieSortableService.sortByYear(sortOrderYear);
                     break;
 
                 case 10:
-                    System.out.print("Sort by producer (firstName/lastName): ");
+                    System.out.print("Sort by producer (Name/last): ");
                     String sortProducer = scanner.nextLine();
-                    sortableService.sortByProducer(sortProducer);
-                    movies.forEach(m -> System.out.println(m.getName() + " - Producer: " + m.getProducer().getFirstName()));
+                    movieSortableService.sortByProducer(sortProducer);
                     break;
 
                 case 0:

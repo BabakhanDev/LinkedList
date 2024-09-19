@@ -1,4 +1,4 @@
-package lmsLinkedlist;
+package lmsLinkedlist.enums;
 
 public enum Genre {
     ACTION,
